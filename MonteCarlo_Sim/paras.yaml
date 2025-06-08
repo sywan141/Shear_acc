@@ -1,0 +1,24 @@
+# MC模拟参数
+R_sh : 1e20  # cgs, 加速区域总半径
+GM0 : 1.1 # 喷流中心洛伦兹因子
+eta : 0.0 # spine范围
+beta_min: 0.0 # 喷流外围速度(线性梯度)
+B0 : 3e-6 # 磁场强度(G)
+xi : 0.1 # 湍动系数
+Lam_max : 1e18 # 最大湍流尺度
+g_me0 : 100 # 粒子在初始共动系下的能量
+r0 : 1e16 # 粒子注入位置
+n_p : 1e-4 # 重子数密度
+N_par : 10000 # 粒子数
+N_time : 5000 # 时间步数
+N_bins : 1 # 时间步长
+N_grids : 60 # 解析解格点数
+type : 'Bohm' # 湍动类型
+SYN_flag: True # 同步辐射开关
+SA_flag : False # 随机加速开关
+Shear_flag: True # 剪切加速开关
+ESC_flag: False # 逃逸开关
+mode : 2 # 模拟
+Type : 2 # 1: 计算x,y坐标   2: 计算半径(论文方法), 不进行近似 3: 采用文中的位移近似条件
+E_approx : True
+Integration : False # 直接使用数值积分
