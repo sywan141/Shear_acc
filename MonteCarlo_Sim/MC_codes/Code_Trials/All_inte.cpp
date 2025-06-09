@@ -156,7 +156,7 @@ long double R_g (long double gme, long double B0)
 
 
 // scattering timescale
-long double tau (long double gme, long double B0, long double q, long double Lam_max, long double xi)
+long double tau_calc (long double gme, long double B0, long double q, long double Lam_max, long double xi)
 {
     long double rg = R_g(gme, B0);
     long double sc_tau = pow(rg , 2-q) * pow(Lam_max , q-1)/ (c * xi);
@@ -243,7 +243,7 @@ int main()
 
     {   int counts = 0;
         long double gme0 = Gamma_list[i];
-        long double dt = tau(gme0, B0 , q, Lam_max, xi);
+        long double dt = tau_calc(gme0, B0 , q, Lam_max, xi);
         //printf("%.2f\n", dt);
 
         for (int j = 0; j < Num_steps; ++j) // loop for costheta
@@ -264,18 +264,18 @@ int main()
 
                     if (Integrat == true) // direct integration
                     {
-                        long double C_A = Coeff_A ( beta_ini, GM0, eta, R_sh);
-                        long double tau = (gme0, B0, q, Lam_max, xi);
+                        long double C_A = Coeff_A (beta_ini, GM0, eta, R_sh);
+                        long double tau = tau_calc(gme0, B0, q, Lam_max, xi);
                         long double sintheta = std::sqrt(1 - costheta * costheta);
                         long double betae = std::sqrt(1 - 1/ pow(gme0, 2));
                         g_me = gme0 * (1 + 0.5 * pow (C_A , 2) * pow (betae, 2) * pow(tau, 2) * pow (sintheta, 2) * pow (std::cos(alpha), 2) 
                             - C_A * pow (betae, 2) * tau * sintheta * costheta * std::cos(alpha)
-                            - pow(C_A, 2) * beta_ini * pow (betae , 3) * tau * pow (sintheta , 2) * costheta * pow(std::cos(alpha),2));
+                            - pow(C_A, 2) * beta_ini * pow (betae , 3) * tau * pow (sintheta , 2) * costheta * pow(std::cos(alpha), 2));
+
                     }
                     else
                     {
 
-                    
                         long double r_tmp;
                         long double beta_tmp;
 
@@ -306,7 +306,7 @@ int main()
                         g_me = LorentzGamma (beta_ini, beta_tmp, costheta, gme0, E_approx);
                     }
 
-                    res[counts][i] = g_me;
+                    res[counts][i] = g_me - gme0;
                     //printf("%.15Lf\n", g_me);
                     counts += 1;
                     
@@ -336,6 +336,12 @@ int main()
             outFile << res[i][j] << (j < gamma_num - 1 ? " " : "\n"); // change rows
 
         }
+    }
+
+    // save all particles' energy
+    for ( int k = 0; k < gamma_num; ++k)
+    {
+        outFile << Gamma_list[k] << (k < gamma_num - 1 ? " " : "\n");
     }
 
     outFile.close();
