@@ -81,8 +81,9 @@ long double LorentzGamma(long double beta1, long double beta2, long double costh
     {   
         Gamma1 = 1 / (1 - beta1 * beta1);
         long double Dbeta = beta2 - beta1;
-        betaD = (Gamma1 * Gamma1) * Dbeta *(1 + Gamma1 * Gamma1 * Dbeta * beta1);
-        gme2 = g_me * (1 + 0.5 * (betaD * betaD) - betae * betaD * costheta);
+        betaD = (Gamma1 * Gamma1) * Dbeta *(1 + Gamma1 * Gamma1 * Dbeta * beta1); // 存在影响
+        //gme2 = dGM * g_me * (1 - betae * betaD * costheta);  // 主要问题
+        gme2 = g_me * (1 + 0.5 * (betaD * betaD) - betae * betaD * costheta); //
     }
 
     else
