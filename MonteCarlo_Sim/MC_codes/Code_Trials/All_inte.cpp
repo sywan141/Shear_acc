@@ -225,15 +225,16 @@ int main()
         return 1;
     }
 
-    int Num_steps = 200; // angle numbers
+    int Num_steps = 60; // angle numbers
     int gamma_num = 21; // energy numbers
 
     std::vector<long double>Gamma_list(gamma_num);
     std::vector<long double>Costheta_list(Num_steps);
     std::vector<long double>Alpha_list(Num_steps);
     std::vector<long double>Phi_list(Num_steps);
-    long double res[Num_steps * Num_steps * Num_steps][gamma_num] = {0};
-
+    std::vector<std::vector<long double>> res(Num_steps * Num_steps * Num_steps, std::vector<long double>(gamma_num, 0.0L));
+    std::cout << "Num_steps: " << Num_steps << std::endl;
+    
     Gamma_list = Logspace(1, 9, gamma_num);
     Costheta_list = Linspace(-1, 1, Num_steps);
     Alpha_list = Linspace(0,2*pi, Num_steps);
@@ -304,9 +305,10 @@ int main()
 
                         }
                         g_me = LorentzGamma (beta_ini, beta_tmp, costheta, gme0, E_approx);
+
                     }
 
-                    res[counts][i] = g_me - gme0;
+                    res[counts][i] = (g_me - gme0);
                     //printf("%.15Lf\n", g_me);
                     counts += 1;
                     
@@ -318,10 +320,22 @@ int main()
     }
 
     // save to a text file
-    std::string outputFile = outputDir + "results.txt";
-    std::ofstream outFile(outputFile);
+    std::string outputFile = outputDir + "results_sol.txt";
 
-    outFile << std::fixed << std::setprecision(30); //high precision
+    // delete and check
+    std::filesystem::remove(outputFile);
+    if (std::filesystem::exists(outputFile)) 
+    {   
+        std::cerr << "Failed to delete file: " << outputFile << std::endl;
+    } 
+    else 
+    {
+        std::cout << "File deleted successfully" << std::endl;
+    }
+
+    std::ofstream outFile(outputFile);
+    outFile << std::fixed << std::setprecision(50); //high precision
+
 
     if (!outFile.is_open())
     {
