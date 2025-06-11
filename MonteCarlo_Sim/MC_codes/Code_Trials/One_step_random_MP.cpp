@@ -101,7 +101,7 @@ cpp_dec_float_50 LorentzGamma(cpp_dec_float_50 beta1, cpp_dec_float_50 beta2, cp
 
     if (approx == true) // use energy approximation
     {   
-        Gamma1 = 1 / (1 - beta1 * beta1);
+        Gamma1 = 1 / mp::sqrt(1 - beta1 * beta1);
         cpp_dec_float_50 Dbeta = beta2 - beta1;
         betaD = (Gamma1 * Gamma1) * Dbeta *(1 + Gamma1 * Gamma1 * Dbeta * beta1); // 存在影响
         //gme2 = dGM * g_me * (1 - betae * betaD * costheta);  // 主要问题
